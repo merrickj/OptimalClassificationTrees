@@ -258,12 +258,12 @@ def OCT(X, y, D=2, alpha=1e-7, Nmin=5, timelimit=None, warmStart=False, verbose=
     # classification of leaves
     C = np.zeros((Tl, K))
     for t in model.Tl:
+        C[t - Tl, :] = [int(c) for c in model.c[t, :]()]
         if verbose:
             print('leaf {}'.format(t), '\n\t', 'contains points? ', model.l[t]())
             print('\tpredicted class: ', C[t - Tl, :])
             print('\tpoints included:')
             print('\t', np.argwhere(np.array(model.z[:, t]()) > 0).reshape((-1,)))
-        C[t - Tl, :] = [int(c) for c in model.c[t, :]()]
     if verbose:
         print('obj: ', model.obj())
 
