@@ -249,12 +249,12 @@ def OCT(X, y, D=2, alpha=1e-7, Nmin=5, timelimit=None, warmStart=False, verbose=
     A = np.zeros((Tb, p))
     b = np.zeros(Tb)
     for t in model.Tb:
+        A[t - 1, :] = [int(a) for a in model.a[t, :]()] if model.d[t]() > 0 else np.zeros((1, p))
+        b[t - 1] = model.b[t]() if model.d[t]() > 0 else 0
         if verbose:
             print('node {}'.format(t), '\t', 'applies a split? ', model.d[t]())
             print('a[{}, :] = '.format(t), A[t - 1, :])
             print('b[{}] = '.format(t), b[t - 1])
-        A[t - 1, :] = [int(a) for a in model.a[t, :]()] if model.d[t]() > 0 else np.zeros((1, p))
-        b[t - 1] = model.b[t]() if model.d[t]() > 0 else 0
     # classification of leaves
     C = np.zeros((Tl, K))
     for t in model.Tl:
